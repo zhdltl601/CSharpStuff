@@ -14,15 +14,15 @@ namespace ConsoleApp1
             //var a2 = a.AsReadOnly();
 
             //C# Closure
-            List<Action> a = new();
-            for (int i = 0; i < 4; i++)
-            {
-                int localI = i; // 로컬 변수로 복사
-                Action action = () => Console.WriteLine(i);
-                a.Add(action);
-            }
-            a.ForEach((x) => x());
-            Console.WriteLine(a.GetType());
+            //List<Action> a = new();
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    int localI = i; // 로컬 변수로 복사
+            //    Action action = () => Console.WriteLine(i);
+            //    a.Add(action);
+            //}
+            //a.ForEach((x) => x());
+            //Console.WriteLine(a.GetType());
         }
 
     }
