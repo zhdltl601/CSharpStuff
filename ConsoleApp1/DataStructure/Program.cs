@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using DataStructure.MyDataStructure;
+using DataStructure.Searching;
 namespace DataStructure
 {
-    namespace DataStructure
+    namespace MyDataStructure
     {
         // -자료구조-
         // 시간복잡도
@@ -21,62 +22,25 @@ namespace DataStructure
         // 해쉬테이블
         // 트리
         // 그래프
-        public class Graph
+        public class Graph<T> where T : struct
         {
-            private readonly int vert; // 정점의 수
-            private readonly List<int>[] adj; // 인접 리스트
-            private readonly bool[] visited;
-            private readonly Queue<int> queue = new();
-
+            private readonly T[,] adj; // 인접 리스트
+            public readonly int vertexSize;
+            public int GetVertexSize => vertexSize;
+            public T[,] GetAdjust => adj;
             public Graph(int vertexSize)
             {
-                vert = vertexSize;
-                adj = new List<int>[vertexSize];
-                visited = new bool[vertexSize];
-                for (int i = 0; i < vertexSize; i++)
-                {
-                    adj[i] = new List<int>();
-                }
+                this.vertexSize = vertexSize;
+                adj = new T[vertexSize, vertexSize];
             }
-            public void AddEdge(int index, int value)
+            public void SetVertexDirection(int index, int index2, T value)
             {
-                adj[index].Add(value);
+                adj[index, index2] = value;
             }
-            public void DFS(int v)
+            public void SetEdge(int index, int index2, T weight = default)
             {
-                visited[v] = true;
-                Console.Write(v + " ");
-
-                foreach (var neighbor in adj[v])
-                {
-                    if (!visited[neighbor])
-                    {
-                        DFS(neighbor);
-                    }
-                }
-            }
-            public void BFS(int start)
-            {
-                bool[] visited = new bool[vert];
-                queue.Clear();
-
-                visited[start] = true;
-                queue.Enqueue(start);
-
-                while (queue.Count > 0)
-                {
-                    int v = queue.Dequeue();
-                    Console.Write(v + " ");
-
-                    foreach (var neighbor in adj[v])
-                    {
-                        if (!visited[neighbor])
-                        {
-                            visited[neighbor] = true;
-                            queue.Enqueue(neighbor);
-                        }
-                    }
-                }
+                SetVertexDirection(index, index2, weight);
+                SetVertexDirection(index2, index, weight);
             }
         }
     }
@@ -100,24 +64,60 @@ namespace DataStructure
         // 순차탐색
         // 이분탐색 
         // 매개변수 탐색
+        // DFS, BFS
+        public class MySearch
+        {
+            public static void DFS<T>(Graph<T> graph) where T : struct
+            {
+                //bool[] visited = new bool[graphVertexCount];
+            }
+            public static void BFS<T>(Graph<T> graph, int startIndex) where T : struct
+            {
+                int graphVertexCount = graph.GetVertexSize;
+                T[,] adj = graph.GetAdjust;
+                bool[] visited = new bool[graphVertexCount];
+                System.Collections.Generic.Queue<int> queue = new();
 
+                visited[startIndex] = true;
+                queue.Enqueue(startIndex);
+
+                Console.WriteLine("BFS searching..");
+
+                while (queue.Count > 0)
+                {
+                    int current = queue.Dequeue();
+                    Console.Write(current + " ");
+
+                    for (int i = 0; i < graphVertexCount; i++)
+                    {
+                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default(T)))
+                        {
+                            visited[i] = true;
+                            queue.Enqueue(i);
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
     }
     public class Program
     {
         public static void Main()
         {
-            DataStructure.Graph g = new(5);
-            g.AddEdge(0, 1);
-            g.AddEdge(0, 3);
-            g.AddEdge(1, 2);
-            g.AddEdge(1, 3);
-            g.AddEdge(2, 3);
-
-            Console.WriteLine("DFS 탐색 결과:");
-            g.DFS(0);
-
-            Console.WriteLine("\nBFS 탐색 결과:");
-            g.BFS(0);
+            int n, m;
+            n = int.Parse(Console.ReadLine());
+            m = int.Parse(Console.ReadLine());
+            Graph<int> g = new(n);
+            for (int i = 0; i < m; i++)
+            {
+                int a, b, weight;
+                a = int.Parse(Console.ReadLine());
+                b = int.Parse(Console.ReadLine());
+                weight = 1;// int.Parse(Console.ReadLine());
+                g.SetEdge(a, b, weight);
+            }
+            MySearch.BFS(g, 0);
         }
     }
 }
