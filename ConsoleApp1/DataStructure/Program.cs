@@ -65,13 +65,41 @@ namespace DataStructure
         // 이분탐색 
         // 매개변수 탐색
         // DFS, BFS
-        public class MySearch
+        public static class MySearch
         {
-            public static void DFS<T>(Graph<T> graph) where T : struct
+            public static void DFS<T>(this Graph<T> graph, int startIndex) where T : struct
             {
-                //bool[] visited = new bool[graphVertexCount];
+                int graphVertexCount = graph.GetVertexSize;
+                T[,] adj = graph.GetAdjust;
+                bool[] visited = new bool[graphVertexCount];
+                System.Collections.Generic.Stack<int> stack = new Stack<int>();
+
+                stack.Push(startIndex);
+
+                Console.WriteLine("DFS Traversal:");
+
+                while (stack.Count > 0)
+                {
+                    int current = stack.Pop();
+
+                    if (!visited[current])
+                    {
+                        visited[current] = true;
+                        Console.Write(current + " ");
+
+                        for (int i = 0; i < graphVertexCount; i++)
+                        {
+                            if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
+                            {
+                                stack.Push(i);
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine();
             }
-            public static void BFS<T>(Graph<T> graph, int startIndex) where T : struct
+            public static void BFS<T>(this Graph<T> graph, int startIndex) where T : struct
             {
                 int graphVertexCount = graph.GetVertexSize;
                 T[,] adj = graph.GetAdjust;
@@ -90,7 +118,7 @@ namespace DataStructure
 
                     for (int i = 0; i < graphVertexCount; i++)
                     {
-                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default(T)))
+                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
                         {
                             visited[i] = true;
                             queue.Enqueue(i);
@@ -117,7 +145,7 @@ namespace DataStructure
                 weight = 1;// int.Parse(Console.ReadLine());
                 g.SetEdge(a, b, weight);
             }
-            MySearch.BFS(g, 0);
+            g.BFS(0);
         }
     }
 }
