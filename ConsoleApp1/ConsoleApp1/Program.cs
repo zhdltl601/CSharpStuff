@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 namespace ConsoleApp1
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+
             //var result = typeof(Child).GetCustomAttribute<BAttribute>();
 
             //A 클래스에 IB 를 상속받는 B 클래스를 상속받는데 따로 IB 를 상속받으면?
