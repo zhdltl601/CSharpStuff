@@ -72,32 +72,23 @@ namespace DataStructure
                 int graphVertexCount = graph.GetVertexSize;
                 T[,] adj = graph.GetAdjust;
                 bool[] visited = new bool[graphVertexCount];
-                System.Collections.Generic.Stack<int> stack = new Stack<int>();
-
-                stack.Push(startIndex);
-
-                Console.WriteLine("DFS Traversal:");
-
-                while (stack.Count > 0)
+                Console.WriteLine("DFS Traversal starting from vertex " + startIndex + ":");
+                DFSUtil(startIndex, visited);
+                Console.WriteLine();
+                void DFSUtil(int current, bool[] visited)
                 {
-                    int current = stack.Pop();
+                    visited[current] = true;
+                    Console.Write(current + " "); // 현재 노드 출력
 
-                    if (!visited[current])
+                    for (int i = 0; i < graphVertexCount; i++)
                     {
-                        visited[current] = true;
-                        Console.Write(current + " ");
-
-                        for (int i = 0; i < graphVertexCount; i++)
+                        // 간선이 존재하고 방문하지 않은 노드 탐색
+                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default(T)))
                         {
-                            if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
-                            {
-                                stack.Push(i);
-                            }
+                            DFSUtil(i, visited);
                         }
                     }
                 }
-
-                Console.WriteLine();
             }
             public static void BFS<T>(this Graph<T> graph, int startIndex) where T : struct
             {
@@ -145,7 +136,7 @@ namespace DataStructure
                 weight = 1;// int.Parse(Console.ReadLine());
                 g.SetEdge(a, b, weight);
             }
-            g.BFS(0);
+            g.DFS(0);
         }
     }
 }
