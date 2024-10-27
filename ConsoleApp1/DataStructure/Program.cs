@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataStructure.MyDataStructure;
-using DataStructure.Searching;
-namespace DataStructure
+using Algorithm.MyDataStructure;
+using Algorithm.Searching;
+using System.Linq;
+namespace Algorithm
 {
     namespace MyDataStructure
     {
@@ -65,16 +66,76 @@ namespace DataStructure
         // 이분탐색 
         // 매개변수 탐색
         // DFS, BFS
-        public static class MySearch
+        public class MySearch
         {
+
+        }
+        public static class MySearchExtension
+        {
+            public static void Dijkstra<T>(this Graph<T> graph) where T : struct
+            {
+                int startIndex = 0;
+                int vertexSize = graph.GetVertexSize;
+                var adj = graph.GetAdjust;
+
+                int[] distances = new int[vertexSize];
+                bool[] visited = new bool[vertexSize];
+                int maxValue = int.MaxValue;
+
+                // 초기화
+                for (int i = 0; i < vertexSize; i++)
+                {
+                    distances[i] = maxValue;
+                    visited[i] = false;
+                }
+                distances[startIndex] = 0;
+
+                for (int count = 0; count < vertexSize - 1; count++)
+                {
+                    int MinDistance(int[] distances, bool[] visited)
+                    {
+                        int min = int.MaxValue;
+                        int minIndex = -1;
+
+                        for (int v = 0; v < vertexSize; v++)
+                        {
+                            if (!visited[v] && distances[v] <= min)
+                            {
+                                min = distances[v];
+                                minIndex = v;
+                            }
+                        }
+
+                        return minIndex;
+                    }
+                    int u = MinDistance(distances, visited);
+                    visited[u] = true;
+
+                    for (int v = 0; v < vertexSize; v++)
+                    {
+                        // 가중치가 기본값이 아닐 때만 업데이트
+                        if (!visited[v] && !EqualityComparer<T>.Default.Equals(adj[u, v], default(T)))
+                        {
+                            int weight = Convert.ToInt32(adj[u, v]);
+                            if (distances[u] != maxValue && distances[u] + weight < distances[v])
+                            {
+                                distances[v] = distances[u] + weight;
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine("Vertex Distance from Source");
+                for (int i = 0; i < vertexSize; i++)
+                {
+                    Console.WriteLine(i + "\t\t" + distances[i]);
+                }
+            }
             public static void DFS<T>(this Graph<T> graph, int startIndex) where T : struct
             {
                 int graphVertexCount = graph.GetVertexSize;
                 T[,] adj = graph.GetAdjust;
                 bool[] visited = new bool[graphVertexCount];
-                Console.WriteLine("DFS Traversal starting from vertex " + startIndex + ":");
-                DFSUtil(startIndex, visited);
-                Console.WriteLine();
                 void DFSUtil(int current, bool[] visited)
                 {
                     visited[current] = true;
@@ -82,13 +143,15 @@ namespace DataStructure
 
                     for (int i = 0; i < graphVertexCount; i++)
                     {
-                        // 간선이 존재하고 방문하지 않은 노드 탐색
-                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default(T)))
+                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
                         {
                             DFSUtil(i, visited);
                         }
                     }
                 }
+                Console.WriteLine("DFS Traversal starting from vertex " + startIndex + ":");
+                DFSUtil(startIndex, visited);
+                Console.WriteLine();
             }
             public static void BFS<T>(this Graph<T> graph, int startIndex) where T : struct
             {
@@ -136,7 +199,14 @@ namespace DataStructure
                 weight = 1;// int.Parse(Console.ReadLine());
                 g.SetEdge(a, b, weight);
             }
-            g.DFS(0);
+            int GetLongestDistanceStudent()
+            {
+
+                return default;
+            }
+            Console.WriteLine(GetLongestDistanceStudent());
+            //g.DFS(0);
+            //g.BFS(0);
         }
     }
 }
