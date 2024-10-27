@@ -23,22 +23,22 @@ namespace Algorithm
         // 해쉬테이블
         // 트리
         // 그래프
-        public class Graph<T> where T : struct
+        public class Graph
         {
-            private readonly T[,] adj; // 인접 리스트
+            private readonly int[,] adj; // 인접 리스트
             public readonly int vertexSize;
             public int GetVertexSize => vertexSize;
-            public T[,] GetAdjust => adj;
+            public int[,] GetAdjust => adj;
             public Graph(int vertexSize)
             {
                 this.vertexSize = vertexSize;
-                adj = new T[vertexSize, vertexSize];
+                adj = new int[vertexSize, vertexSize];
             }
-            public void SetVertexDirection(int index, int index2, T value)
+            public void SetVertexDirection(int index, int index2, int value)
             {
                 adj[index, index2] = value;
             }
-            public void SetEdge(int index, int index2, T weight = default)
+            public void SetEdge(int index, int index2, int weight = default)
             {
                 SetVertexDirection(index, index2, weight);
                 SetVertexDirection(index2, index, weight);
@@ -72,69 +72,55 @@ namespace Algorithm
         }
         public static class MySearchExtension
         {
-            public static void Dijkstra<T>(this Graph<T> graph) where T : struct
+            public static int[] Dijkstra(this Graph graph, int m)
             {
-                int startIndex = 0;
-                int vertexSize = graph.GetVertexSize;
+                int graphVertexSize = graph.GetVertexSize;
                 var adj = graph.GetAdjust;
+                int[] dis = new int[m];
+                bool[] visited = new bool[m];
 
-                int[] distances = new int[vertexSize];
-                bool[] visited = new bool[vertexSize];
-                int maxValue = int.MaxValue;
-
-                // 초기화
-                for (int i = 0; i < vertexSize; i++)
+                for (int i = 0; i < graphVertexSize - 1; i++)
                 {
-                    distances[i] = maxValue;
-                    visited[i] = false;
+                    dis[i] = int.MaxValue;
                 }
-                distances[startIndex] = 0;
+                dis[graphVertexSize - 1] = 0;
 
-                for (int count = 0; count < vertexSize - 1; count++)
+                for (int i = 0; i < graphVertexSize; i++)
                 {
-                    int MinDistance(int[] distances, bool[] visited)
+                    int GetMinIndex()
                     {
                         int min = int.MaxValue;
-                        int minIndex = -1;
-
-                        for (int v = 0; v < vertexSize; v++)
+                        int minIndex = 0;
+                        for (int j = 0; j < m; j++)
                         {
-                            if (!visited[v] && distances[v] <= min)
+                            if (dis[j] < min && visited[j] == false)
                             {
-                                min = distances[v];
-                                minIndex = v;
+                                min = dis[i];
+                                minIndex = j;
                             }
                         }
-
                         return minIndex;
                     }
-                    int u = MinDistance(distances, visited);
-                    visited[u] = true;
+                    int minNodeIndex = GetMinIndex();
+                    visited[minNodeIndex] = true;
 
-                    for (int v = 0; v < vertexSize; v++)
+                    for (int j = 0; j < m; j++)
                     {
-                        // 가중치가 기본값이 아닐 때만 업데이트
-                        if (!visited[v] && !EqualityComparer<T>.Default.Equals(adj[u, v], default(T)))
+                        if (visited[j] == false && adj[minNodeIndex, j] != 0)
                         {
-                            int weight = Convert.ToInt32(adj[u, v]);
-                            if (distances[u] != maxValue && distances[u] + weight < distances[v])
+                            if (dis[j] > dis[minNodeIndex] + adj[minNodeIndex, j])
                             {
-                                distances[v] = distances[u] + weight;
+                                dis[j] = dis[minNodeIndex] + adj[minNodeIndex, j];
                             }
                         }
                     }
                 }
-
-                Console.WriteLine("Vertex Distance from Source");
-                for (int i = 0; i < vertexSize; i++)
-                {
-                    Console.WriteLine(i + "\t\t" + distances[i]);
-                }
+                return dis;
             }
-            public static void DFS<T>(this Graph<T> graph, int startIndex) where T : struct
+            public static void DFS(this Graph graph, int startIndex)
             {
                 int graphVertexCount = graph.GetVertexSize;
-                T[,] adj = graph.GetAdjust;
+                var adj = graph.GetAdjust;
                 bool[] visited = new bool[graphVertexCount];
                 void DFSUtil(int current, bool[] visited)
                 {
@@ -143,7 +129,7 @@ namespace Algorithm
 
                     for (int i = 0; i < graphVertexCount; i++)
                     {
-                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
+                        if (!visited[i] && !EqualityComparer<int>.Default.Equals(adj[current, i], default(int)))
                         {
                             DFSUtil(i, visited);
                         }
@@ -153,10 +139,10 @@ namespace Algorithm
                 DFSUtil(startIndex, visited);
                 Console.WriteLine();
             }
-            public static void BFS<T>(this Graph<T> graph, int startIndex) where T : struct
+            public static void BFS(this Graph graph, int startIndex) 
             {
                 int graphVertexCount = graph.GetVertexSize;
-                T[,] adj = graph.GetAdjust;
+                var adj = graph.GetAdjust;
                 bool[] visited = new bool[graphVertexCount];
                 System.Collections.Generic.Queue<int> queue = new();
 
@@ -172,7 +158,7 @@ namespace Algorithm
 
                     for (int i = 0; i < graphVertexCount; i++)
                     {
-                        if (!visited[i] && !EqualityComparer<T>.Default.Equals(adj[current, i], default))
+                        if (!visited[i] && !EqualityComparer<int>.Default.Equals(adj[current, i], default(int)))
                         {
                             visited[i] = true;
                             queue.Enqueue(i);
@@ -190,21 +176,25 @@ namespace Algorithm
             int n, m;
             n = int.Parse(Console.ReadLine());
             m = int.Parse(Console.ReadLine());
-            Graph<int> g = new(n);
+            Graph g = new(n);
             for (int i = 0; i < m; i++)
             {
                 int a, b, weight;
                 a = int.Parse(Console.ReadLine());
                 b = int.Parse(Console.ReadLine());
-                weight = 1;// int.Parse(Console.ReadLine());
-                g.SetEdge(a, b, weight);
+                weight = int.Parse(Console.ReadLine());
+                g.SetEdge(a - 1, b - 1, weight);
             }
-            int GetLongestDistanceStudent()
+            var dis = g.Dijkstra(m);
+            int answer = 0;
+            for (int i = 0; i < n; i++)
             {
-
-                return default;
+                if (answer < dis[i])
+                {
+                    answer = dis[i];
+                }
             }
-            Console.WriteLine(GetLongestDistanceStudent());
+            Console.WriteLine(answer);
             //g.DFS(0);
             //g.BFS(0);
         }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reactive", "Reactive\Reacti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LINQ", "LINQ\LINQ.csproj", "{26A0F5E9-C2A3-4C8E-A40B-46F4ED48123B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructure", "DataStructure\DataStructure.csproj", "{34FF3C4B-B267-400A-BD50-B98033430CAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithm", "Algorithm\Algorithm.csproj", "{936F4FFF-5F17-4780-913E-2D9BF86A52D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{26A0F5E9-C2A3-4C8E-A40B-46F4ED48123B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26A0F5E9-C2A3-4C8E-A40B-46F4ED48123B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26A0F5E9-C2A3-4C8E-A40B-46F4ED48123B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34FF3C4B-B267-400A-BD50-B98033430CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34FF3C4B-B267-400A-BD50-B98033430CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34FF3C4B-B267-400A-BD50-B98033430CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34FF3C4B-B267-400A-BD50-B98033430CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936F4FFF-5F17-4780-913E-2D9BF86A52D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936F4FFF-5F17-4780-913E-2D9BF86A52D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936F4FFF-5F17-4780-913E-2D9BF86A52D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936F4FFF-5F17-4780-913E-2D9BF86A52D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
